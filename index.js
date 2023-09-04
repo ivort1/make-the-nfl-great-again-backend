@@ -14,9 +14,9 @@ async function main() {
 
     for(const user of users) {
         try {
-            const supabase = new Supabase(user.user_id, user.display_name, user.team_name, user.avatar);
-            await supabase.updateUserTable();
-            console.log(await supabase.updateUserTable());
+            const supabase = new Supabase();
+            await supabase.updateUserTable(user.user_id, user.display_name, user.team_name, user.avatar);
+            console.log(await supabase.updateUserTable(user.user_id, user.display_name, user.team_name, user.avatar));
         } catch(error) {
             console.log(error);
         }

@@ -3,21 +3,30 @@ import { createClient } from '@supabase/supabase-js';
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 class Supabase {
-    constructor(user_id, display_name, team_name, avatar) {
-        this.user_id = user_id;
-        this.display_name = display_name;
-        this.team_name = team_name;
-        this.avatar = avatar;
+    async fetchTable(table, select) {
+        const { data, error } = await supabase.from(table).select(select);
+    
+        return data;
     }
 
-    async updateUserTable() {
+    async updateUserTable(user_id, display_name, team_name, avatar) {
         const { data, error } = await supabase
             .from('user')
-            .update({ display_name: this.display_name, team_name: this.team_name, avatar: this.avatar })
-            .eq('user_id', this.user_id)
+            .update({ display_name: display_name, team_name: team_name, avatar: avatar })
+            .eq('user_id', user_id)
             .select()
     
-            return data;
+        return data;
+    }
+
+    async updateSanityTable(column, json, sanity_id) {
+        const { data, error } = await supabase
+            .from('sanity')
+            .update({ [column]: json})
+            .eq('sanity_id', sanity_id)
+            .select()
+
+        return data;
     }
 }
 
